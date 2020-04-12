@@ -20,6 +20,12 @@
 	</properties>
 
 	<dependencies>
+	
+		<!-- To securre the endpoints we can add spring security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
 		<!-- Adds devops support (monitoring and managing application), can be accessed using /actuator/* -->
 		<dependency>
