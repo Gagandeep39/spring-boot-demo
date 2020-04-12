@@ -17,5 +17,15 @@ public class HelloWorldRestController {
 	public String helloWorld() {
 		return "Hello World " + LocalDate.now();
 	}
+	
+	/**
+	 * This method was only created to test if spring-devtools jupdate project on making an ychanges
+	 * Result: It works, it gets evertime i press savep
+	 * @return String
+	 */
+	@GetMapping("/gagan")
+	public String howMyName() {
+		return "<h1>Hiiii Gagan~</h1>";
+	}
 
 }
