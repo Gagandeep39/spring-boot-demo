@@ -20,7 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	/**
 	 * TO enable role based security
-	 * NOTE: Enable formLogin() when role based authentication is on
+	 * NOTE: Enable formLogin() when role based authentication is on (else user will get 403 error or unauthorized access )
 	 * Login page is dilayed when role based pages are accessed and no user is logged in
 	 */
 	@Override
