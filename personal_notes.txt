@@ -1,0 +1,223 @@
+
+Spring boot 
+Overcome difficilties like 
+-> WHich maven archetype to use 
+-> How to setup XML or JAVA 
+-> How tp setup server 
+-> What maven dependencies to use
+
+Spring boot 
+-> PRovides a Sprig initializer 
+-> Uses spring core, mvc, aop in the backgroud 
+
+Dependecies 
+Spring Web 
+-> Provides all basic dependencies (MVC, Restful and TOmcat erver)
+-> 
+
+
+Project Structure 
+-> USes standard maven directiry structure 
+->Mvnw
+mvnw -> RUn mavn project (no need toh ave maven installed)
+mvnw.cmd -> (For windows, used to clean, compile and test)
+Can be deleted if we have maven installed and in our environment variable 
+-> Pom.xml 
+Similar to standard maven project, stores all depndencies 
+
+
+
+spring-boot-maven-plugin
+To build maen project 
+Used to build a .jar/.war file or perform other maven operation 
+
+@SpringBootConfiguration 
+-> ENable AutoCOnfiuration (autoconfog support )
+-> ComponentScan (recursilvly scan sub packages )
+-> COnfiguration (Register @Bean or other configuration classes)
+
+NOTES
+-> Must always be in root package 
+-> Enables default congiguration to work proerly 
+-> By default, scans all subpackages from root package where @SpringBootCongif is written
+-> Prevents us from manually writing @ComponentScan("com.package.name") 
+eg. 
+com.gagan.spring 
+	|- Main.java 
+	|- controller
+	|	|-CustomerCOntroller.java 
+	|- entity 
+		|-Custoemr.java 
+		|-User.java
+-> TO scan other packages 
+we have to explicity pecify in Mainclass 
+@ComponentScansacnBasePackages={"a.b.c", "org.dayta.util"})
+
+
+
+Application.properties 
+-> Add personal Configuration (eg. server.port=9999 to run tomcat on 9999)
+-> We can also add custom properties (eg, my.name=Gagandeep)
+-> Property file data can be directly uswed as ${my.name}
+eg @Value("${my.name}")
+	String coachName;
+
+NOTE: 
+-> Do NOT use src/main/webapp when we select .jar in spring initialzer as webapp will be ignored 
+
+Spring boot tmeplates 
+-> Supports autoconfiguration for thymeleaf, freemarker, mustache 
+
+Spring Boot Starter 
+-> Collection of Spring dependencies
+-> Prevent us from individually adding depenencies lik(spring-mvc, spring-tx, spring-orm etc)
+-> Ensures compatility between jars (eg. some version of spring is not compatible with some version of hibernate or spring secutiry )
+-> Reduces maven congigiuration 
+-> Created, tested by Spring team 
+-> Total of 30+ spring-boot-starter dependency 
+
+Popular ones are 
+
+Spring-boot-starter-web (Maven dependency)
+-> Sping MVC 
+-> Hibernate Validation 
+-> Topcat
+-> Json 
+-> Spring REST 
+Saves us to individually add all dependencies 
+
+spring-boot-starter 
+-> support for autoconfiguration, loggin, yaml
+Spring-boot-starter-jpa 
+-> Adds jpa, hibernate support
+spring-boot-startersecurity 
+spring-boot-starter-thymeleaf
+
+To see what spring-boot-starter-* contains what jar 
+Ecllipse -> pom.xml -> at bottom (dependency hierchy)
+Intellij -> View -. Tool window -> Maven project -> dependencies 
+
+
+Springboot starter parent 
+-> Used to provide maven defaults (eg. java 8, spring version)
+-> Present in every springboot starter project
+-> All spring-boot-start-* uses versions specified by parent 
+-> provides default configuration for spring boot plugin (allows running >mvn spring-boot:run)
+-> We only have to make a referece in plugin 
+<plugins>
+    <plugin>
+        <groupId>org.springfrmework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+    </plugin>
+</plugins>
+-> we can ovveride Springbootparnet valuses uin the following mmnagger 
+<properties>
+	<java.version></java.version>
+</properties>
+
+Soring boot Dev Tools
+-> after making any change, we have to manually restart the application 
+-> Spring devtools restarts app automatically when code is updated
+-> We only jave to add dependency in mven 
+<artifactId>spring-boot-devtools</artifactId>
+-> Updates prject everytime we press save
+
+
+Spring Boot Actuator
+-> DevOps functionality 
+-> Allows monitoring and application management 
+-> Can use it by adding dependency 
+<artifactId>spring-boot-starter-actuator</artifactId>
+-> Exposes all application mertrics
+-> Reposne is alwys json
+-> All endpoints (except info, health) are disabled by default, we can enable it by adding this in properties file
+management.endpoints.web.exposure.include=* 
+-> TO exclude an endpoint 
+management.endpoints.web.exposure.exclude=health,info
+-> Can be accessed from /actuator/{endpointName}
+eg. /health -> Health info about applicatiom 
+	/info -> Information avout the project 
+	/auditevents -> Audit applicaion events 
+	/beans -> Lists all beans in application contex 
+	/mappings -> List all @RequesMappings 
+	/actuator -> Contains list of all andpoints and url mapping 
+-> Full list of amaping is available in 
+https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html
+
+
+spring-boot-starter-security 
+-> Secures actuators endpoints 
+-> Requests for username and paassowrd wjen accessing endpoints 
+-> Usnername: username, password: generated when we run the app 
+-> Maven dpendency 
+<groupId>prg.springframework.boot</groupId>
+<artifactId>spring-boot-starter-security</artifactId>
+-> /health, /info is still enabled 
+-> Default username, password can be overidden in properties files 
+spring.security.user.name=abc 
+spring.security.user.password=xuz
+-> We can add support for roles for accessing the actuator as it is done in spring securtty 
+
+
+
+Running from command line 
+-> No ned to have any IDE or any server installed as pspring boot have it embedded
+-> Execute from the directory where jar file is
+-> Requires spring-boot-maven-plugin
+-> Requires maven to be instelled for using mvn, else use mvnw from application's root irectory 
+-> In mvnw, 'w' implies windows
+-> mvnw commans downloads maven on first execution 
+Method 1
+1. $mvn package (creates a jar file)
+2. $java -jar file-name.jar 
+Method 2
+$mvn spring-boot:run
+Method 3
+$mvnw spring-boot:run
+
+Properties files 
+-> Prevents us from hardcoding files 
+-> Can define any custo properties 
+-> Propertie ca be ccessed using @Value()
+-> Default locatio src/main/resources/application.properties 
+eg. @Value("${student.name}")
+	private String studentName;
+-> Spring boot has 1000+ properties 
+https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties
+-> Properties re grouped in subsections (eg. core, web, security, actuatrtor etc)
+
+Logging (Core Property)
+-> Logging properties based on package names (Levels -> trace, debug, info, warn, error, fatal, off)
+logging.level.org.springframework=DEBUG
+logging.level.org.hibernate=TRACE
+logging.level.com.spring.gagan=INFO
+-> Loggin file 
+loggin.file=filename.log
+-> Loggin info 
+https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
+
+
+Server property (Web Property)
+-> Specify server port 
+server.port=7070 
+-> After adding below property w wil laccess the server using (localhost:8080/my-name-is/*)
+server.servlet.context-path=/my-name-is
+-> Session timeout 
+server.servlet.ession.timeout=15m
+
+Actuator Properties 
+management.endpoints.web.exposure.exclude=health,info
+management.endpoints.web.exposure.include=health,info
+
+Security properties 
+spring.security.user.name=abc 
+spring.security.user.password=xuz
+spring.security.user.roles=ADMIN
+
+Data properties 
+spring.daasource.url=jdbc:mysql://localhost:3306/application 
+spring.datasource.username=gagan 
+spring.datasource.password=123456
+
+
+
