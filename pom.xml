@@ -21,7 +21,13 @@
 
 	<dependencies>
 
-		<!-- Added devtools support -->
+		<!-- Adds devops support (monitoring and managing application), can be accessed using /actuator/* -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<!-- Added devtools support (Automatically Updating project on server when saved) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
